@@ -1,13 +1,14 @@
 import path  from 'path';
+import fs from 'fs/promises';
 import  { release, version } from 'os';
 import  { createServer as createServerHttp } from 'http';
-import ('./files/c.js');
-import greaterThan from './files/a.json' with {type: 'json'};
-import lessThan from './files/b.json' with {type: 'json'};
+import './files/c.js';
 
 const random = Math.random();
 
-const  unknownObject = random > 0.5 ? greaterThan : lessThan;
+const filePath = random > 0.5 ? './files/a.json' : './files/b.json';
+
+const  unknownObject = await fs.readFile(new URL(filePath, import.meta.url), 'utf-8').then((data) => JSON.parse(data));
 
 console.log(`Release ${release()}`);
 console.log(`Version ${version()}`);
